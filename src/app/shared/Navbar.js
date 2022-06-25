@@ -1,27 +1,54 @@
-import React, { Component } from 'react';
-import { Dropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { Trans } from 'react-i18next';
+import React, { Component } from "react";
+import { Dropdown } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Trans } from "react-i18next";
+import useMeContext from "../../context/MeContext";
 
 class Navbar extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.onHandleLogout = this.onHandleLogout.bind(this)
+  }
+
   toggleOffcanvas() {
-    document.querySelector('.sidebar-offcanvas').classList.toggle('active');
+    document.querySelector(".sidebar-offcanvas").classList.toggle("active");
   }
   toggleRightSidebar() {
-    document.querySelector('.right-sidebar').classList.toggle('open');
+    document.querySelector(".right-sidebar").classList.toggle("open");
   }
-  render () {
+
+  onHandleLogout(e) {
+    e.preventDefault();
+    
+    window.localStorage.removeItem('token');
+    window.location.reload();
+  }
+
+  render() {
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <Link className="navbar-brand brand-logo" to="/"><img src={require('../../assets/images/logo.svg')} alt="logo" /></Link>
-          <Link className="navbar-brand brand-logo-mini" to="/"><img src={require('../../assets/images/logo-mini.svg')} alt="logo" /></Link>
+          <Link className="navbar-brand brand-logo" to="/">
+            <img src={"/bakery_shop.jpg"} alt="logo" />
+          </Link>
+          <Link className="navbar-brand brand-logo-mini" to="/">
+            <img
+              src={"/bakery_shop.jpg"}
+              alt="logo"
+            />
+          </Link>
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-stretch">
-          <button className="navbar-toggler navbar-toggler align-self-center" type="button" onClick={ () => document.body.classList.toggle('sidebar-icon-only') }>
+          <button
+            className="navbar-toggler navbar-toggler align-self-center"
+            type="button"
+            onClick={() => document.body.classList.toggle("sidebar-icon-only")}
+          >
             <span className="mdi mdi-menu"></span>
           </button>
-          <div className="search-field d-none d-md-block">
+          {/* <div className="search-field d-none d-md-block">
             <form className="d-flex align-items-center h-100" action="#">
               <div className="input-group">
                 <div className="input-group-prepend bg-transparent">
@@ -30,33 +57,33 @@ class Navbar extends Component {
                 <input type="text" className="form-control bg-transparent border-0" placeholder="Search projects"/>
               </div>
             </form>
-          </div>
+          </div> */}
           <ul className="navbar-nav navbar-nav-right">
             <li className="nav-item nav-profile">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link">
-                  <div className="nav-profile-img">
-                    <img src={require("../../assets/images/faces/face1.jpg")} alt="user"/>
-                    <span className="availability-status online"></span>
-                  </div>
-                  <div className="nav-profile-text">
-                    <p className="mb-1 text-black"><Trans>David Greymaax</Trans></p>
-                  </div>
+                  <RenderProfile />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="navbar-dropdown">
-                  <Dropdown.Item href="!#" onClick={evt =>evt.preventDefault()}>
+                  <Dropdown.Item
+                    href="!#"
+                    onClick={(evt) => evt.preventDefault()}
+                  >
                     <i className="mdi mdi-cached mr-2 text-success"></i>
                     <Trans>Activity Log</Trans>
                   </Dropdown.Item>
-                  <Dropdown.Item href="!#" onClick={evt =>evt.preventDefault()}>
+                  <Dropdown.Item
+                    href="!#"
+                    onClick={(e) => this.onHandleLogout(e)}
+                  >
                     <i className="mdi mdi-logout mr-2 text-primary"></i>
                     <Trans>Signout</Trans>
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">
                   <i className="mdi mdi-email-outline"></i>
@@ -170,9 +197,13 @@ class Navbar extends Component {
               <button type="button" className="nav-link border-0" onClick={this.toggleRightSidebar} >
                 <i className="mdi mdi-format-line-spacing"></i>
               </button>
-            </li>
+            </li> */}
           </ul>
-          <button className="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" onClick={this.toggleOffcanvas}>
+          <button
+            className="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
+            type="button"
+            onClick={this.toggleOffcanvas}
+          >
             <span className="mdi mdi-menu"></span>
           </button>
         </div>
@@ -180,5 +211,23 @@ class Navbar extends Component {
     );
   }
 }
+
+const RenderProfile = () => {
+  const [ me ] = useMeContext();
+
+  return (
+    <>
+      {/* <div className="nav-profile-img">
+        <img src={require("../../assets/images/faces/face1.jpg")} alt="user" />
+        <span className="availability-status online"></span>
+      </div> */}
+      <div className="nav-profile-text">
+        <p className="mb-1 text-black">
+          <Trans>{me.name ? me.name : 'No Name'}</Trans>
+        </p>
+      </div>
+    </>
+  );
+};
 
 export default Navbar;

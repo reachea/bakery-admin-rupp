@@ -2,6 +2,16 @@ import React, { Component,Suspense, lazy } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Spinner from '../app/shared/Spinner';
+import AddBakeryShop from './bakery-shop/AddBakeryShop';
+import BakeryShop from './bakery-shop/BakeryShop';
+import BakeryShopDetail from './bakery-shop/BakeryShopDetail';
+import AddCakeCategory from './cake-category/AddCakeCategory';
+import CakeCategory from './cake-category/CakeCategory';
+import CakeCategoryDetail from './cake-category/CakeCategoryDetail';
+import AddCake from './cake/AddCake';
+import Cake from './cake/Cake';
+import CakeDetail from './cake/CakeDetail';
+import Login from './login/Login';
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard'));
 
@@ -26,7 +36,6 @@ const ChartJs = lazy(() => import('./charts/ChartJs'));
 const Error404 = lazy(() => import('./error-pages/Error404'));
 const Error500 = lazy(() => import('./error-pages/Error500'));
 
-const Login = lazy(() => import('./user-pages/Login'));
 const Register1 = lazy(() => import('./user-pages/Register'));
 const Lockscreen = lazy(() => import('./user-pages/Lockscreen'));
 
@@ -42,8 +51,20 @@ class AppRoutes extends Component {
         <Switch>
           <Route exact path="/dashboard" component={ Dashboard } />
 
+          <Route exact path="/bakery-shop/create" component={ AddBakeryShop } />
+          <Route exact path="/bakery-shop/list" component={ BakeryShop } />
+          <Route exact path="/bakery-shop/:id/edit" component={ BakeryShopDetail } />
 
-          <Route path="/basic-ui/buttons" component={ Buttons } />
+          <Route exact path="/cake-category/create" component={ AddCakeCategory } />
+          <Route exact path="/cake-category/list" component={ CakeCategory } />
+          <Route exact path="/cake-category/:id/edit" component={ CakeCategoryDetail } />
+
+          <Route exact path="/cake/create" component={ AddCake } />
+          <Route exact path="/cake/list" component={ Cake } />
+          <Route exact path="/cake/:id/edit" component={ CakeDetail } />
+
+
+          {/* <Route path="/basic-ui/buttons" component={ Buttons } />
           <Route path="/basic-ui/dropdowns" component={ Dropdowns } />
           <Route path="/basic-ui/typography" component={ Typography } />
 
@@ -66,7 +87,7 @@ class AppRoutes extends Component {
           <Route path="/error-pages/error-404" component={ Error404 } />
           <Route path="/error-pages/error-500" component={ Error500 } />
 
-          <Route path="/general-pages/blank-page" component={ BlankPage } />
+          <Route path="/general-pages/blank-page" component={ BlankPage } /> */}
 
 
           <Redirect to="/dashboard" />
